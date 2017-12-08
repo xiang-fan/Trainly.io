@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-1">
+      <img ng-src={{user.profile_pic}} style="width: 100%;">
+    </div>
+    <div class="col-sm-11">
+      <h1>Welcome Back! {{user.f_name}} {{user.l_name}}</h1>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 5rem;">
+    <div class="col-sm-12" ng-repeat="button in buttons">
+      <button type="button" class="btn btn-primary" href="courses.html" style="width: 20rem; margin-bottom: 2rem; padding: 2rem 0;">
+        <h2>{{button}}</h2>
+      </button>
+    </div>
+  </div>
+</div>
