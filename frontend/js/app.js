@@ -1,0 +1,1 @@
+var trainly = angular.module("trainly", ['ngRoute']);

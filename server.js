@@ -6,19 +6,19 @@ parser   = require('body-parser');
 
 
 //Database Connection
-var connection = mysql.createConnection({
-  host     : 'us-cdbr-iron-east-05.cleardb.net',
-  user     : 'bc25561c4d7046',
-  password : '017038aa',
-  database : 'heroku_eecbd9de5c4c545'
-});
-
 // var connection = mysql.createConnection({
-//   host     : 'localhost',
-//   user     : '',
-//   password : '',
-//   database : 'test'
+//   host     : 'us-cdbr-iron-east-05.cleardb.net',
+//   user     : 'bc25561c4d7046',
+//   password : '017038aa',
+//   database : 'heroku_eecbd9de5c4c545'
 // });
+
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : '',
+  password : '',
+  database : 'test'
+});
 try {
   connection.connect();
   
@@ -39,6 +39,7 @@ app.get('/',function(req,res){
     res.sendFile('index.html',{'root': __dirname + '/frontend'});
 })
 
+//getUserById
 app.get('/api/user/:id', function (req,res) {
   var id = req.params.id;
  
@@ -60,10 +61,31 @@ app.get('/api/user/:id', function (req,res) {
   });
 })
 
-// app.get('/api/user/:cid', function (req, res) {
-//   var cid = req.params.cid;
-//   connection.query('SELECT * from course where course_id = ?', [cid], function(err, rows, fields) {
-//     if (!err){
+//getAllCourses
+app.get('/api/courses', function (req, res) {
+  connection.query('SELECT * from course', function(err, rows, fields) {
+    if (!err){
+        var response = [];
+ 
+      if (rows.length != 0) {
+        response.push({'result' : 'success', 'data' : rows});
+      } else {
+        response.push({'result' : 'error', 'msg' : 'No Results Found'});
+      }
+ 
+      res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+  });
+})
+
+// app.get('/api/user/:id/enrolled', function (req,res) {
+//   var id = req.params.id;
+ 
+//   connection.query('SELECT * from user where user_id = ?', [id], function(err, rows, fields) {
+//       if (!err){
 //         var response = [];
  
 //       if (rows.length != 0) {
@@ -77,10 +99,8 @@ app.get('/api/user/:id', function (req,res) {
 //       } else {
 //         res.status(400).send(err);
 //       }
-//   })
+//   });
 // })
-;
-
 
 
 

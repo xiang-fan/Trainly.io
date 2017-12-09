@@ -1,26 +1,25 @@
 // (function () { // IIFE
-var abcd = angular.module("abcd", ['ngRoute']);
 
-abcd.config(Config);
-abcd.controller("DashboardController", DashboardController);
+trainly.config(Config);
+trainly.controller("DashboardController", DashboardController);
+trainly.controller("CourseController", CourseController);
 
 
-function DashboardController($scope, $http, $routeParams) {
+function DashboardController($scope, $routeParams, apiService) {
   $scope.userId = $routeParams.uid;
-  $http.get("api/user/" + $scope.userId)
+  apiService.getUserById($scope.userId)
   .then(function(response) {
-    console.log(response)
+    console.log(response);
     $scope.user = response.data[0].data[0];
-    $scope.buttons = ['Look Up Courses', 'Enrolled Courses', 'Playlist', 'Account History']
+    //$scope.buttons = ['Look Up Courses', 'Enrolled Courses', 'Playlist', 'Account History']
   });
 }
 
-function CoursesCountroller($scope, $http, $routeParams) {
-  $scope.courseid = $routeParams.cid;
-  $http.get("api/courses/" + $scope.cid)
+function CourseController($scope, apiService) {
+  apiService.getAllCourses()
   .then(function(response) {
-    $scope.courses = response.data;
-    console.log(response)
+    $scope.courses = response.data[0].data;
+    console.log(response);
   });
 }
 
@@ -31,10 +30,9 @@ function Config($routeProvider) {
     controller: "DashboardController",
     controllerAs: "model"
   })
-
-  .when("/courses/:cid", {
+  .when("/courses", {
     templateUrl: "frontend/templates/courses.html",
-    controller: "CoursesController",
+    controller: "CourseController",
     controllerAs: "model"
   })
 }

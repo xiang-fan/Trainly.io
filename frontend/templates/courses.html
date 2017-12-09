@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-1">
-      <img ng-src={{user.profile_pic}} style="width: 100%;">
-    </div>
-    <div class="col-sm-11">
-      <h1>Available Courses {{courses.course_id}} {{courses.course_name}}</h1>
+    <div class="col-sm-12">
+      <h1>Available Courses </h1>
     </div>
   </div>
   <div class="row">
-    {{courses.course_id}} {{courses.course_name}}
+    <div class="col-sm-12" ng-repeat="course in courses">
+      {{course.course_id}} {{course.name}}
+    </div>
+
   </div>
 </div>
