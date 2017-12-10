@@ -6,19 +6,19 @@ parser   = require('body-parser');
 
 
 //Database Connection
-// var connection = mysql.createConnection({
-//   host     : 'us-cdbr-iron-east-05.cleardb.net',
-//   user     : 'bc25561c4d7046',
-//   password : '017038aa',
-//   database : 'heroku_eecbd9de5c4c545'
-// });
-
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : '',
-  password : '',
-  database : 'test'
+  host     : 'us-cdbr-iron-east-05.cleardb.net',
+  user     : 'bc25561c4d7046',
+  password : '017038aa',
+  database : 'heroku_eecbd9de5c4c545'
 });
+
+// var connection = mysql.createConnection({
+//   host     : 'localhost',
+//   user     : '',
+//   password : '',
+//   database : 'test'
+// });
 try {
   connection.connect();
   
