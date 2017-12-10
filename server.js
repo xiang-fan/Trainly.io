@@ -2,7 +2,8 @@
 var http     = require('http'),
 express  = require('express'),
 mysql    = require('mysql'),
-parser   = require('body-parser');
+parser   = require('body-parser'),
+password = require('password-hash-and-salt');
 
 
 var pool = mysql.createPool({
@@ -54,6 +55,43 @@ app.get('/api/user/:id', function (req,res) {
           response.push({'result' : 'error', 'msg' : 'No Results Found'});
         }
         res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+app.put('/api/login', function (req, res) {
+  var username = req.body.username;
+  var pwd = req.body.password;
+  pool.getConnection(function(err,connection){
+    // password('Qg8kzpeVEW').hash(function(error, hash) {
+    //   if(error)
+    //     throw new Error('Something went wrong!');
+
+    //   // Store hash (incl. algorithm, iterations, and salt) 
+    //   console.log(hash);
+    // });
+    connection.query('select * from user where user.email = ?', [username], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          password(pwd).verifyAgainst(rows[0].hash_pw, function(error, verified) {
+            if(error)
+              res.status(400).send(error);
+            if(!verified) {
+              res.status(400).send("Do not play with fire!");
+            } else {
+              response.push({'result' : 'success', 'data' : rows});
+              res.status(200).send(JSON.stringify(response));
+            }
+          });
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
       } else {
         res.status(400).send(err);
       }
@@ -144,7 +182,41 @@ app.put('/api/disinterestcourse', function (req,res) {
   
 })
 
+
+
 app.get('/api/user/:uid/mycourses', function (req, res) {
+  // var mysecret = "pbkdf2$10000$ada9ad04684b86a4256462d3bb3353e287957974e26292d73d6163d18430b399cf30bcfe6668a8e55cb9e4caff553519c7af650628f678842c99ee26e82de41b$376deedf03783d506d3d5915500bc823cc6c2d4e37f4374af868a217da8c4418de2a25ff7d59203f9876e88c585dba12e832547cab56b878dc57aca7187b9fa2";
+  // var mysecret2 = "";
+  // password('mysecret').hash(function(error, hash) {
+  //   if(error)
+  //     throw new Error('Something went wrong!');
+
+  //   // Store hash (incl. algorithm, iterations, and salt) 
+  //   mysecret = hash;
+  //   console.log(mysecret);
+  // });
+
+  // password('mysecret').hash(function(error, hash) {
+  //   if(error)
+  //     throw new Error('Something went wrong!');
+
+  //   // Store hash (incl. algorithm, iterations, and salt) 
+  //   mysecret2 = hash;
+  //   console.log(mysecret2);
+
+  //   password('mysecret').verifyAgainst(mysecret, function(error, verified) {
+  //     if(error)
+  //         throw new Error('Something went wrong!');
+  //     if(!verified) {
+  //         console.log("Don't try! We got you!");
+  //     } else {
+  //         console.log("verified");
+  //     }
+  //   });
+  // });
+
+  
+
   pool.getConnection(function(err,connection){
     var uid = req.params.uid;
     if (err) {

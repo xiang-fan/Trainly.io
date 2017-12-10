@@ -5,14 +5,28 @@
   trainly.controller("CourseController", CourseController);
   trainly.controller("MyCourseController", MyCourseController);
   trainly.controller("CourseDetailController", CourseDetailController);
+  trainly.controller("LoginController", LoginController);
 
+  function LoginController($scope, $routeParams, apiService, $location) {
+    $scope.login = function() {
+      apiService.login($scope.model.username, $scope.model.password)
+      .then(function(response) {
+        $scope.user = response.data[0].data[0];
+        $scope.loginError = "";
+        $location.path('user/' + $scope.user.user_id);
+      })
+      .catch(function(error) {
+        console.log(error);
+        $scope.loginError = error.data;
+      });
+    }
+  }
 
 
   function DashboardController($scope, $routeParams, apiService) {
     $scope.user_id = $routeParams.uid;
     apiService.getUserById($scope.user_id)
     .then(function(response) {
-      console.log(response);
       $scope.user = response.data[0].data[0];
     //$scope.buttons = ['Look Up Courses', 'Enrolled Courses', 'Playlist', 'Account History']
   });
@@ -23,7 +37,6 @@
     apiService.getMyCourses($scope.user_id)
     .then(function(response) {
       $scope.mycourses = response.data[0].data;
-      console.log($scope.mycourses);
     });
 
     apiService.getMyInterestedCourses($scope.user_id)
@@ -45,7 +58,6 @@
       apiService.enrollCourse($routeParams.uid, course.course_id)
       .then(function(response) {
         if (response.data[0].result == 'success') {
-          console.log("success");
           alert("Successfully enrolled course " + course.name);
           $scope.getAllCourses($routeParams.uid);
         }
@@ -59,7 +71,6 @@
       apiService.interestACourse($routeParams.uid, cid)
       .then(function(response) {
         if (response.data[0].result == 'success') {
-          console.log("success");
           $scope.getAllCourses($routeParams.uid);
         }
         else {
@@ -72,7 +83,6 @@
       apiService.disinterestCourse($routeParams.uid, cid)
       .then(function(response) {
         if (response.data[0].result == 'success') {
-          console.log("success");
           $scope.getAllCourses($routeParams.uid);
         }
         else {
@@ -150,6 +160,11 @@
 
   function Config($routeProvider) {
     $routeProvider
+    .when("/", {
+      templateUrl: "frontend/templates/login.html",
+      controller: "LoginController",
+      controllerAs: "model"
+    })
     .when("/user/:uid", {
       templateUrl: "frontend/templates/dashboard.html",
       controller: "DashboardController",

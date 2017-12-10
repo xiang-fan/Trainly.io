@@ -1,0 +1,29 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a href style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3" style="font-size: 3rem;">
+      <div class="alert alert-danger" role="alert" ng-if="loginError">
+        {{loginError}}
+      </div>
+      <form>
+        <div class="form-group">
+        <label for="inputEmail">Email address</label>
+          <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" style="font-size: 2rem;" ng-model="model.username">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword1">Password</label>
+          <input type="password" class="form-control" id="inputPassword1" placeholder="Password" style="font-size: 2rem;" ng-model="model.password">
+        </div>
+        <button type="submit" ng-click="login()" class="btn btn-primary" style="font-size: 3rem; padding: 1rem 3rem; margin-top: 3rem;">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+

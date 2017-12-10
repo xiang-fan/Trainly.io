@@ -14,7 +14,8 @@ function apiService($http) {
     getCompletedMaterials: getCompletedMaterials,
     completeMaterial: completeMaterial,
     getProgress: getProgress,
-    completeCourse: completeCourse
+    completeCourse: completeCourse,
+    login: login
   };
   return api; 
 
@@ -88,6 +89,14 @@ function apiService($http) {
     var obj = {uid: uid, cid: cid};
     return $http.put(url, obj);
   }
+
+  function login(username, password) {
+    var url = '/api/login';
+    var obj = {username: username, password: password};
+    return $http.put(url, obj);
+  }
+
+
 
 
 

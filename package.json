@@ -13,6 +13,7 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "password-hash-and-salt": "^0.1.4"
   }
 }
