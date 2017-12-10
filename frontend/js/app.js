@@ -1,1 +1,1 @@
-var trainly = angular.module("trainly", ['ngRoute']);
+var trainly = angular.module("trainly", ['ngRoute', 'ui.bootstrap']);

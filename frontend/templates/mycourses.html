@@ -1,0 +1,32 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a ng-href="{{'#/user/'+user_id}}" style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>My Courses </h1>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 3rem;">
+  <div class="col-md-6">
+    <h2>Enrolled Courses</h2>
+    <ul class="list-group">
+      <li ng-repeat="course in mycourses" class="list-group-item">
+        {{course.course_id}} {{course.name}}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <h2>Interested Courses</h2>
+    <ul class="list-group">
+      <li ng-repeat="course in myinterestedcourses" class="list-group-item">
+        {{course.course_id}} {{course.name}}
+      </li>
+    </ul>
+  </div>
+
+  </div>
+</div>

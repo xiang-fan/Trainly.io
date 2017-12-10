@@ -1,3 +1,9 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a ng-href="{{'#/user/'+user_id}}" style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+
 <div class="container">
   <div class="row">
     <div class="col-sm-1">
@@ -10,8 +16,13 @@
 
   <div class="row" style="margin-top: 5rem;">
     <div class="col-sm-12">
-      <a class="btn btn-primary" href="#/courses" role="button" style="width: 20rem; margin-bottom: 2rem; padding: 2rem 0;">
+      <a class="btn btn-primary" ng-href="{{'#/user/' + user.user_id + '/courses'}}" role="button" style="width: 20rem; margin-bottom: 2rem; padding: 2rem 0;">
         <h2>Look Up Courses</h2>
+      </a>
+    </div>
+    <div class="col-sm-12">
+      <a class="btn btn-primary" ng-href="{{'#/user/' + user.user_id + '/mycourses'}}" role="button" style="width: 20rem; margin-bottom: 2rem; padding: 2rem 0;">
+        <h2>My Courses</h2>
       </a>
     </div>
   </div>

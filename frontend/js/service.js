@@ -4,7 +4,11 @@ function apiService($http) {
   var api = {
     getUserById: getUserById,
     getAllCourses: getAllCourses,
-    getEnrolledCoursesByUserId: getEnrolledCoursesByUserId
+    getEnrolledCoursesByUserId: getEnrolledCoursesByUserId,
+    interestACourse: interestACourse,
+    disinterestCourse: disinterestCourse,
+    getMyCourses: getMyCourses,
+    getMyInterestedCourses: getMyInterestedCourses
   };
   return api; 
 
@@ -12,9 +16,9 @@ function apiService($http) {
     var url = '/api/user/' + uid;
     return $http.get(url);
   }
-
-  function getAllCourses() {
-    var url = '/api/courses'
+ 
+  function getAllCourses(uid) {
+    var url = '/api/user/' + uid + '/courses'
     return $http.get(url);
   }
 
@@ -22,6 +26,30 @@ function apiService($http) {
     var url = '/api/user/' + uid + '/enrolled';
     return $http.get(url);
   }
+
+  function interestACourse(uid, cid) {
+    var url = '/api/interestcourse'
+    var obj = {uid: uid, cid: cid}
+    return $http.put(url, obj);
+  }
+
+  function disinterestCourse(uid, cid) {
+    var url = '/api/disinterestcourse'
+    var obj = {uid: uid, cid: cid}
+    return $http.put(url, obj);
+  }
+
+  function getMyCourses(uid) {
+    var url = '/api/user/' + uid + '/mycourses'
+    return $http.get(url);
+  }
+
+  function getMyInterestedCourses(uid) {
+    var url = '/api/user/' + uid + '/myinterestedcourses'
+    return $http.get(url);
+  }
+
+
 
 
 
