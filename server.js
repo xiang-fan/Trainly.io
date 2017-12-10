@@ -17,9 +17,9 @@ var pool = mysql.createPool({
 // var pool = mysql.createPool({
 //   connectionLimit : 10,
 //   host     : 'localhost',
-//   user     : '',
+//   user     : 'root',
 //   password : '',
-//   database : 'test',
+//   database : 'trainlyio',
 //   debug    :  false
 // }); 
 
@@ -77,6 +77,26 @@ app.get('/api/user/:uid/courses', function (req, res) {
         }
         res.status(200).send(JSON.stringify(response));
       } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+app.put('/api/enrollcourse', function (req,res) {
+  var uid = req.body.uid;
+  var cid = req.body.cid;
+  var sql = 'INSERT INTO ENROLLED (`user_id`, `course_id`, `start_time`, `payment_code`) VALUES (?, ?, NOW(), LEFT(UUID(), 8))';
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
         res.status(400).send(err);
       }
     });
@@ -169,7 +189,125 @@ app.get('/api/user/:uid/myinterestedcourses', function (req, res) {
       }
     });  
   });
-})
+});
+app.get('/api/user/:uid/course/:cid/incompleted', function (req, res) {
+  pool.getConnection(function(err,connection){
+    var uid = req.params.uid;
+    var cid = req.params.cid;
+    var sql = 'select user.user_id, enrolled.course_id, material.material_id AS incompleted_material_id, material.material_name AS incompleted_material_name, link.url, link.video_tag, post.text, downloadable_file.path, downloadable_file.type, downloadable_file.size from user inner join enrolled on user.user_id = enrolled.user_id and enrolled.complete is NULL inner join material on enrolled.course_id = material.course_id LEFT JOIN (select completed_materials.material_id as completed_id from user inner join enrolled on user.user_id = enrolled.user_id and enrolled.complete is NULL inner join material on enrolled.course_id = material.course_id inner join completed_materials on user.user_id = completed_materials.user_id and completed_materials.material_id = material.material_id where user.user_id = ?) a on material.material_id = a.completed_id left join link on material.material_id = link.material_id left join post on material.material_id = post.material_id left join downloadable_file on material.material_id = downloadable_file.material_id where user.user_id = ? and enrolled.course_id = ? and a.completed_id is NULL';
+    if (err) {
+      console.log('Database Connetion failed:' + err);
+      res.status(400).send(err);
+    }  
+    connection.query(sql, [uid, uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } 
+    });  
+  });
+});
+
+app.get('/api/user/:uid/course/:cid/completed', function (req, res) {
+  pool.getConnection(function(err,connection){
+    var uid = req.params.uid;
+    var cid = req.params.cid;
+    var sql = 'select user.user_id, enrolled.course_id, material.material_id AS completed_material_id, material.material_name AS completed_material_name, link.url, link.video_tag, post.text, downloadable_file.path, downloadable_file.type, downloadable_file.size from user inner join enrolled on user.user_id = enrolled.user_id inner join material on enrolled.course_id = material.course_id inner join completed_materials on user.user_id = completed_materials.user_id and completed_materials.material_id = material.material_id left join link on material.material_id = link.material_id left join post on material.material_id = post.material_id left join downloadable_file on material.material_id = downloadable_file.material_id where user.user_id = ? and enrolled.course_id = ?';
+    if (err) {
+      console.log('Database Connetion failed:' + err);
+      res.status(400).send(err);
+    }  
+    connection.query(sql, [uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } 
+    });  
+  });
+});
+
+app.put('/api/completematerial', function (req,res) {
+  var uid = req.body.uid;
+  var mid = req.body.mid;
+  var sql = 'INSERT INTO COMPLETED_MATERIALS (`user_id`, `material_id`, `date_time`) VALUES (?, ?, NOW());';
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [uid, mid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+  
+});
+
+app.get('/api/user/:uid/course/:cid/progress', function (req, res) {
+  pool.getConnection(function(err,connection){
+    var uid = req.params.uid;
+    var cid = req.params.cid;
+    var sql = 'select a.completed_count, b.total_count, b.course_id from (select count( 1 ) as completed_count from material inner join completed_materials on completed_materials.material_id = material.material_id where user_id = ? and course_id = ?) a LEFT JOIN (select count( 1 ) as total_count, material.course_id as course_id from material where course_id = ?) b on b.course_id = ?';
+    if (err) {
+      console.log('Database Connetion failed:' + err);
+      res.status(400).send(err);
+    }  
+    connection.query(sql, [uid, cid, cid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } 
+    });  
+  });
+});
+
+app.put('/api/completecourse', function (req,res) {
+  var uid = req.body.uid;
+  var cid = req.body.cid;
+  var sql = "UPDATE `ENROLLED` SET `end_time`=NOW(), `complete`='Yes' WHERE `user_id`=? and`course_id`=?";
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+  
+});
+
+
 
 // Create server
 app.listen(app.get('port'), function(){

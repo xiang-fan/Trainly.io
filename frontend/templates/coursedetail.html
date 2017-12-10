@@ -1,0 +1,86 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a ng-href="{{'#/user/'+user_id}}" style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>{{progress.course_id}} Course Materials</h1>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 3rem;">
+    <div class="col-md-6">
+      <h2>Incompleted Materials</h2>
+      <uib-accordion style="width:100%;">
+        <div uib-accordion-group class="panel-default" ng-repeat="material in incompletedmaterials">
+          <uib-accordion-heading>
+            {{material.incompleted_material_name}}
+          </uib-accordion-heading>
+          <div ng-if="material.text">
+            {{material.text}}
+            <div class="text-right" style="margin-top: 1rem;"><a href ng-click="completeMaterial(material)" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+              <h3>Complete</h3>
+            </a></div>
+          </div>
+          <div ng-if="material.url">
+            <div style="position: relative; height: 0; padding-bottom: 65%;">
+              <iframe width="100%" height="auto" ng-src="{{replaceUrl(material.url)}}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen style="position: absolute; top: 0; left: 0; height: 100%;"></iframe>
+            </div>
+            <div class="text-right" style="margin-top: 1rem;"><a href ng-click="completeMaterial(material)" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+              <h3>Complete</h3>
+            </a></div>
+          </div>
+          <div ng-if="material.path">
+            <a ng-href="{{material.path}}" target="_blank" style="text-decoration: underline; color: blue;">
+              {{material.type}} {{material.size}}
+              <div class="text-right" style="margin-top: 1rem;"><a href ng-click="completeMaterial(material)" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+                <h3>Complete</h3>
+              </a></div>
+            </a>
+          </div>
+          
+        </div>
+
+      </uib-accordion>
+    </div>
+    <div class="col-md-6">
+    <h2>Completed Materials</h2>
+      <uib-accordion style="width:100%;">
+        <div uib-accordion-group class="panel-default" ng-repeat="material in completedmaterials">
+          <uib-accordion-heading>
+            {{material.completed_material_name}}
+          </uib-accordion-heading>
+          <div ng-if="material.text">
+            {{material.text}}
+          </div>
+          <div ng-if="material.url">
+            <div style="position: relative; height: 0; padding-bottom: 65%;">
+            <iframe width="100%" height="auto" ng-src="{{replaceUrl(material.url)}}" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen style="position: absolute; top: 0; left: 0; height: 100%;"></iframe>
+            </div>
+          </div>
+          <div ng-if="material.path">
+          <a ng-href="{{material.path}}" target="_blank" style="text-decoration: underline; color: blue;">
+              {{material.type}} {{material.size}}
+            </a>
+          </div>
+          
+        </div>
+
+      </uib-accordion>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-sm-12" style="margin-top: 3rem;">
+      <uib-progressbar class="progress-striped active" value="percentage" type="success"><b>{{percentage}}%</b></uib-progressbar>
+    </div>
+    <div class="col-sm-12 text-right">
+      <a href ng-click="completeCourse()" class="btn btn-primary complete-course disabled-{{incompletedmaterials.length}}" role="button" style="padding: 0.5rem 2rem; color: white;">
+        <h3>Complete Course</h3>
+      </a>
+    </div>
+  </div>
+</div>

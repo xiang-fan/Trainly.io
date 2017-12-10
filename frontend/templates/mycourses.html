@@ -14,8 +14,23 @@
   <div class="col-md-6">
     <h2>Enrolled Courses</h2>
     <ul class="list-group">
-      <li ng-repeat="course in mycourses" class="list-group-item">
-        {{course.course_id}} {{course.name}}
+      <li ng-repeat="course in mycourses" class="list-group-item row completed-{{course.complete}}">
+        <div ng-if="course.complete == 'Yes'">
+          <div class="col-md-8">
+            {{course.course_id}} {{course.name}}
+          </div>
+          <div class="col-md-4 text-right">
+            COMPLETED
+          </div>
+        </div>
+        <a ng-href="{{'#/user/'+user_id+'/course/'+course.course_id}}" ng-if="course.complete != 'Yes'">
+          <div class="col-md-8">
+            {{course.course_id}} {{course.name}}
+          </div>
+          <div class="col-md-4 text-right">
+            ENROLLED
+          </div>
+        </a> 
       </li>
     </ul>
   </div>

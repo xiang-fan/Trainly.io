@@ -32,7 +32,7 @@
         </div>
 
         <div class="col-sm-12 text-right">
-          <a ng-if="course.enrolled == 0" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+          <a href ng-click="enrollCourse(course)" ng-if="course.enrolled == 0" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
             <h3>Enroll</h3>
           </a>
           

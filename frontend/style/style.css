@@ -60,3 +60,31 @@ a:hover {
 a:focus {
   text-decoration: none;
 }
+
+.list-group-item.completed-:hover {
+  background: black;
+}
+
+.list-group-item.completed-:hover a {
+  color: white;
+}
+
+.progress-striped {
+  height: 3rem;
+}
+
+.progress-bar {
+  height: 3rem;
+  background-color: #5cb85c;
+  font-size: 2rem;
+}
+
+.complete-course.disabled- {
+  pointer-events: auto;
+  background-color: #5cb85c;
+}
+
+.complete-course:not(.disabled-) {
+  pointer-events: none;
+  background-color: gray;
+}
