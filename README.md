@@ -1,9 +1,9 @@
 # CS5200 Project
 Project link: https://cs5200-project.herokuapp.com
 
-DEMO video:
+DEMO video: https://www.youtube.com/watch?v=FT4maJVUyVw&feature=youtu.be
 
-Installation video:
+Installation video: https://www.youtube.com/watch?v=ZJbUh1R8Viw
 
 This is the final project for CS5200f17, and the goal of the project is to gain hands-on experience with developing a full database application from the ground up. 
 
@@ -11,7 +11,7 @@ We created an web application called Trainly.io which use MySQL as back-end data
 to create front-end web app and connect it with the database.
 
 Functions:
-a) Register a new user (studnet, faculty and/or admin)
+a) Register a new user (studnet, faculty and/or admin) 
 b) As an administrator, authenticate a faculty user (based upon title/affiliation/website/email) or fellow
 administrator
 c) Provide a categorized list of a student’s courses (each with primary/secondary topics, ranked by
