@@ -6,23 +6,23 @@ parser   = require('body-parser'),
 password = require('password-hash-and-salt');
 
 
-// var pool = mysql.createPool({
-//   connectionLimit : 10,
-//   host     : 'us-cdbr-iron-east-05.cleardb.net',
-//   user     : 'bc25561c4d7046',
-//   password : '017038aa',
-//   database : 'heroku_eecbd9de5c4c545',
-//   debug    :  false
-// });   
-
 var pool = mysql.createPool({
   connectionLimit : 10,
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'trainlyio',
+  host     : 'us-cdbr-iron-east-05.cleardb.net',
+  user     : 'bc25561c4d7046',
+  password : '017038aa',
+  database : 'heroku_eecbd9de5c4c545',
   debug    :  false
-}); 
+});   
+
+// var pool = mysql.createPool({
+//   connectionLimit : 10,
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : '',
+//   database : 'trainlyio',
+//   debug    :  false
+// }); 
 
 // Setup express
 var app = express();
@@ -104,8 +104,8 @@ app.put('/api/register', function (req,res) {
         });
       });
     });
-  });
-})
+  })
+});
 
 app.put('/api/registerfaculty', function (req,res) {
   var email = req.body.email;
