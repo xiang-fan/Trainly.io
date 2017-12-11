@@ -6,6 +6,38 @@
   trainly.controller("MyCourseController", MyCourseController);
   trainly.controller("CourseDetailController", CourseDetailController);
   trainly.controller("LoginController", LoginController);
+  trainly.controller("RegisterController", RegisterController);
+  trainly.controller("AuthenticateController", AuthenticateController);
+
+  function RegisterController($scope, $routeParams, apiService, $location) {
+    $scope.register = function() {
+      apiService.register($scope.model.email, $scope.model.password, $scope.model.fname,
+        $scope.model.lname, $scope.model.street, $scope.model.city, $scope.model.country, $scope.model.zipcode)
+      .then(function(response) {
+        $scope.user = response.data[0].data[0];
+        $scope.registerError = "";
+        if($scope.model.isAdmin) {
+          apiService.registerAdmin($scope.model.email)
+          .then(function(response) {
+            $location.path('user/' + $scope.user.user_id)
+          })
+        }
+        if ($scope.model.isFaculty) {
+          apiService.registerFaculty($scope.model.email, $scope.model.title, $scope.model.affiliation, $scope.model.website)
+          .then(function(response) {
+            $location.path('user/' + $scope.user.user_id);
+
+          })
+        } else {
+          $location.path('user/' + $scope.user.user_id);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+        $scope.registerError = error.data;
+      });
+    }
+  }
 
   function LoginController($scope, $routeParams, apiService, $location) {
     $scope.login = function() {
@@ -165,6 +197,11 @@
       controller: "LoginController",
       controllerAs: "model"
     })
+    .when("/register", {
+      templateUrl: "frontend/templates/register.html",
+      controller: "RegisterController",
+      controllerAs: "model"
+    })
     .when("/user/:uid", {
       templateUrl: "frontend/templates/dashboard.html",
       controller: "DashboardController",
@@ -185,6 +222,12 @@
       controller: "CourseDetailController",
       controllerAs: "model"
     })
+    .when("/user/:uid/authenticate", {
+      templateUrl: "frontend/templates/authenticate.html",
+      controller: "AuthenticateController",
+      controllerAs: "model"
+    })
+
   }
 
 // })();

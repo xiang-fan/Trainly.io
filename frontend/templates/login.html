@@ -20,7 +20,16 @@
           <label for="inputPassword1">Password</label>
           <input type="password" class="form-control" id="inputPassword1" placeholder="Password" style="font-size: 2rem;" ng-model="model.password">
         </div>
-        <button type="submit" ng-click="login()" class="btn btn-primary" style="font-size: 3rem; padding: 1rem 3rem; margin-top: 3rem;">Login</button>
+        <div class="row">
+        <div class="col-sm-6">
+          <button type="submit" ng-click="login()" class="btn btn-primary text-left" style="font-size: 3rem; padding: 1rem 3rem; margin-top: 3rem;">Login</button>
+        </div>
+        <div class="col-sm-6 text-right">
+          <a href="#/register" class="btn btn-primary " style="font-size: 3rem; padding: 1rem 3rem; margin-top: 3rem;">Register</a>
+        </div>
+          
+        </div>
+        
       </form>
     </div>
   </div>

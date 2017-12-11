@@ -16,19 +16,25 @@
     <ul class="list-group">
       <li ng-repeat="course in mycourses" class="list-group-item row completed-{{course.complete}}">
         <div ng-if="course.complete == 'Yes'">
-          <div class="col-md-8">
+          <div class="col-md-9">
             {{course.course_id}} {{course.name}}
           </div>
-          <div class="col-md-4 text-right">
+          <div class="col-md-3 text-right">
             COMPLETED
+          </div>
+          <div class="col-sm-12">
+            {{course.topic}} / {{course.secondary_topics}}
           </div>
         </div>
         <a ng-href="{{'#/user/'+user_id+'/course/'+course.course_id}}" ng-if="course.complete != 'Yes'">
-          <div class="col-md-8">
+          <div class="col-md-9">
             {{course.course_id}} {{course.name}}
           </div>
-          <div class="col-md-4 text-right">
+          <div class="col-md-3 text-right">
             ENROLLED
+          </div>
+          <div class="col-sm-12">
+            {{course.topic}} / {{course.secondary_topics}}
           </div>
         </a> 
       </li>
@@ -39,6 +45,9 @@
     <ul class="list-group">
       <li ng-repeat="course in myinterestedcourses" class="list-group-item">
         {{course.course_id}} {{course.name}}
+        <div class="col-sm-12">
+            {{course.topic}} / {{course.secondary_topics}}
+        </div>
       </li>
     </ul>
   </div>

@@ -1,0 +1,82 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a href style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3" style="font-size: 3rem;">
+      <div class="alert alert-danger" role="alert" ng-if="registerError">
+        {{registerError}}
+      </div>
+      <form>
+        <div class="form-group">
+        <label for="inputEmail">Email address</label>
+          <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" style="font-size: 2rem;" ng-model="model.email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword1">Password</label>
+          <input type="password" class="form-control" id="inputPassword1" placeholder="Password" style="font-size: 2rem;" ng-model="model.password">
+        </div>
+        <div class="form-group">
+          <label for="firstname">Firstname</label>
+          <input type="text" class="form-control" id="Firstname" placeholder="Firstname" style="font-size: 2rem;" ng-model="model.fname">
+        </div>
+        <div class="form-group">
+          <label for="lastname">Lastname</label>
+          <input type="text" class="form-control" id="Lastname" placeholder="Lastname" style="font-size: 2rem;" ng-model="model.lname">
+        </div>
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input type="text" class="form-control" id="Street" placeholder="Street" style="font-size: 2rem;" ng-model="model.street">
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="City" placeholder="City" style="font-size: 2rem;" ng-model="model.city">
+        </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" class="form-control" id="Country" placeholder="Country" style="font-size: 2rem;" ng-model="model.country">
+        </div>
+        <div class="form-group">
+          <label for="zipcode">Zipcode</label>
+          <input type="text" class="form-control" id="Zipcode" placeholder="Zipcode" style="font-size: 2rem;" ng-model="model.zipcode">
+        </div>
+        <div class="form-check col-sm-6">
+          <label class="form-check-label">
+            <input type="checkbox" ng-model="model.isFaculty" class="form-check-input">
+            Faculty
+          </label>
+        </div>
+        <div class="form-check col-sm-6 text-right">
+          <label class="form-check-label">
+            <input type="checkbox" ng-model="model.isAdmin" class="form-check-input">
+            Admin
+          </label>
+        </div>
+        <div style="font-size: 1.5rem;">
+          <p>(Do not check any boxes if you are a student!)</p>
+        </div>
+        <div class="form-group" ng-if="model.isFaculty">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="Title" placeholder="Professor, Lecture, etc..." style="font-size: 2rem;" ng-model="model.title">
+        </div>
+        <div class="form-group" ng-if="model.isFaculty">
+          <label for="affiliation">Affiliation</label>
+          <input type="text" class="form-control" id="Affiliation" placeholder="Affiliation" style="font-size: 2rem;" ng-model="model.affiliation">
+        </div>
+        <div class="form-group" ng-if="model.isFaculty">
+          <label for="website">Website</label>
+          <input type="text" class="form-control" id="Website" placeholder="Website" style="font-size: 2rem;" ng-model="model.website">
+        </div>
+        <div class="row">
+        <div class="col-sm-12 text-right">
+          <button type="submit" ng-click="register()" class="btn btn-primary" style="font-size: 3rem; padding: 1rem 3rem; margin-top: 3rem;">Register</button>
+        </div>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</div>

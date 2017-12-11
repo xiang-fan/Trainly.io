@@ -15,7 +15,11 @@ function apiService($http) {
     completeMaterial: completeMaterial,
     getProgress: getProgress,
     completeCourse: completeCourse,
-    login: login
+    login: login,
+    register: register,
+    registerFaculty: registerFaculty,
+    registerAdmin: registerAdmin
+
   };
   return api; 
 
@@ -94,6 +98,25 @@ function apiService($http) {
     var url = '/api/login';
     var obj = {username: username, password: password};
     return $http.put(url, obj);
+  }
+
+  function register(email, password, fname, lname, street, city, country, zipcode) {
+    var url = '/api/register';
+    var obj = {email: email, password: password, fname: fname, lname: lname, street: street, city: city, country: country, zipcode: zipcode};
+    return $http.put(url, obj);
+  }
+
+  function registerFaculty(email, title, affiliation, website) {
+    var url = '/api/registerfaculty';
+    var obj = {email: email, title: title, affiliation: affiliation, website: website};
+    return $http.put(url, obj);
+  }
+
+  function registerAdmin(email) {
+    var url = '/api/registeradmin';
+    var obj = {email: email};
+    return $http.put(url, obj);
+
   }
 
 

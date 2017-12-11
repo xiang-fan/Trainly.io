@@ -60,7 +60,95 @@ app.get('/api/user/:id', function (req,res) {
       }
     });
   });
+  });
+//register
+//https://dummyimage.com/400x400/000/fff&text=
+app.put('/api/register', function (req,res) {
+  var email = req.body.email;
+  var pwd = req.body.password;
+  //var pic = req.body.pic;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var street = req.body.street;
+  var city = req.body.city;
+  var country = req.body.country;
+  var zipcode = req.body.zipcode;
+
+
+  var sql = 'INSERT INTO USER (`email`, `hash_pw`, `profile_pic`, `f_name`, `l_name`, `street`, `city`, `country`,`postal_code`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);';
+
+  pool.getConnection(function(err,connection){
+
+    password(pwd).hash(function(error, hash) {
+      if(error)
+        throw new Error('Something went wrong!');
+
+      // Store hash (incl. algorithm, iterations, and salt) 
+      console.log(hash);
+
+      connection.query(sql, [email, hash, 'https://dummyimage.com/400x400/000/fff&text=' + email, fname, lname, street, city, country, zipcode], function(err, rows, fields) {
+        
+        connection.query('SELECT user_id FROM USER WHERE email = ?', [email], function(err, rows, fields) {
+          connection.release();
+          var response = [];
+
+
+          if (rows.length != 0) {
+            response.push({'result' : 'success', 'data' : rows});
+            res.status(200).send(JSON.stringify(response));
+          } else {
+            response.push({'result' : 'error', 'msg' : 'No Results Found'});
+          }
+        });
+      });
+    });
+  });
 })
+
+app.put('/api/registerfaculty', function (req,res) {
+  var email = req.body.email;
+  var title = req.body.title;
+  var affiliation = req.body.affiliation;
+  var website = req.body.website;
+  var sql = 'INSERT INTO FACULTY (`faculty_id`, `title`, `affiliation`, `website`, `date_time`) VALUES ((SELECT user_id FROM USER WHERE email = ?), ?, ?, ?, NOW())';
+  console.log(email);
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [email, title, affiliation, website], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+app.put('/api/registeradmin', function (req,res) {
+  var email = req.body.email;
+  var sql = 'INSERT INTO ADMINISTRATOR (`admin_id`, `date_time`) VALUES ((SELECT user_id FROM USER WHERE email = ?), NOW());';
+  console.log(email);
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [email], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+
 
 app.put('/api/login', function (req, res) {
   var username = req.body.username;
@@ -223,7 +311,7 @@ app.get('/api/user/:uid/mycourses', function (req, res) {
       console.log('Database Connetion failed:' + err);
       res.status(400).send(err);
     }  
-    connection.query('SELECT COURSE.name, COURSE.course_id, ENROLLED.complete FROM USER INNER JOIN ENROLLED ON USER.user_id = ENROLLED.user_id INNER JOIN COURSE ON ENROLLED.course_id = COURSE.course_id WHERE USER.user_id = ? ORDER BY ENROLLED.complete', [uid], function(err, rows, fields) {
+    connection.query('SELECT COURSE.name, COURSE.course_id, ENROLLED.complete, course.topic, GROUP_CONCAT(secondary_topic.name) AS secondary_topics FROM USER INNER JOIN ENROLLED ON USER.user_id = ENROLLED.user_id INNER JOIN COURSE ON ENROLLED.course_id = COURSE.course_id inner join secondary_topic on course.course_id = secondary_topic.course_id WHERE USER.user_id = ? group by course_id ORDER BY ENROLLED.complete', [uid], function(err, rows, fields) {
       connection.release();
       if (!err){
         var response = [];
@@ -247,7 +335,7 @@ app.get('/api/user/:uid/myinterestedcourses', function (req, res) {
       res.status(400).send(err);
     }
     var uid = req.params.uid;
-    connection.query('SELECT COURSE.name, COURSE.course_id FROM USER INNER JOIN INTERESTED ON USER.user_id = INTERESTED.user_id INNER JOIN COURSE ON COURSE.course_id = INTERESTED.course_id WHERE USER.user_id = ?', [uid], function(err, rows, fields) {
+    connection.query('SELECT COURSE.name, COURSE.course_id, course.topic, GROUP_CONCAT(secondary_topic.name) AS secondary_topics FROM USER INNER JOIN INTERESTED ON USER.user_id = INTERESTED.user_id INNER JOIN COURSE ON COURSE.course_id = INTERESTED.course_id inner join secondary_topic on course.course_id = secondary_topic.course_id WHERE USER.user_id = ? group by course_id', [uid], function(err, rows, fields) {
       connection.release();
       if (!err){
         var response = [];

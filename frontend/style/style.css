@@ -88,3 +88,18 @@ a:focus {
   pointer-events: none;
   background-color: gray;
 }
+
+[type="checkbox"]:before {
+  width: 30px;
+  height: 30px;
+}
+
+[type="checkbox"]:checked:after {
+  left: -0.6em;
+  top: -0.5em;
+  font-size: 5rem;
+}
+
+input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus {
+  outline: none;
+}
