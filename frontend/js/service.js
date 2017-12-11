@@ -24,11 +24,8 @@ function apiService($http) {
     authenticateFaculty: authenticateFaculty,
     authenticateAdmin: authenticateAdmin,
     getHistory: getHistory,
-    getTotalCost: getTotalCost
-
-
-
-
+    getTotalCost: getTotalCost,
+    getCertificate: getCertificate
   };
   return api; 
 
@@ -162,16 +159,9 @@ function apiService($http) {
     return $http.get(url);
   }
 
-
-
-
-
-
-
-
-
-
-
-
+  function getCertificate(uid, cid) {
+    var url = '/api/user/'+ uid + '/course/' + cid + '/certificate';
+    return $http.get(url);
+  }
 
 }

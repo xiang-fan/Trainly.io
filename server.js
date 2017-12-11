@@ -569,6 +569,31 @@ app.put('/api/authenticateadmin', function (req,res) {
   
 });
 
+app.get('/api/user/:uid/course/:cid/certificate', function (req, res) {
+  pool.getConnection(function(err,connection){
+    var uid = req.params.uid;
+    var cid = req.params.cid;
+    var sql = 'SELECT USER.user_id, USER.f_name, USER.l_name, ENROLLED.course_id, COURSE.name AS course_name, ENROLLED.end_time AS completed_time FROM USER INNER JOIN ENROLLED ON USER.user_id = ENROLLED.user_id INNER JOIN COURSE ON COURSE.course_id = ENROLLED.course_id WHERE ENROLLED.complete = "Yes" AND USER.user_id = ? AND COURSE.course_id = ?;';
+    if (err) {
+      console.log('Database Connetion failed:' + err);
+      res.status(400).send(err);
+    }  
+    connection.query(sql, [uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } 
+    });  
+  });
+});
+
 
 
 // Create server

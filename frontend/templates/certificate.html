@@ -1,0 +1,37 @@
+<ul class="nav nav-bar justify-content-center" style="margin-bottom: 3rem;">
+  <li class="nav-item">
+    <h1><a ng-href="{{'#/user/'+user_id}}" style="color: white;">Trainly.io</a></h1>
+  </li>
+</ul>
+
+<div class="container">
+<!--   <div class="row">
+  <h1 class="col-sm-12 text-center">Certificate of Course Completion</h1>
+  </div> -->
+
+  <div class="row" style="padding-top: 3rem;">
+  <ul class="list-group col-sm-12">
+    <li class="list-group-item" style="height: 500px;">
+      <div class="col-sm-12 text-center" style="margin-top: 2rem;">
+        <h1 style="font-size: 4.5rem;">Certificate of Course Completion</h1>
+      </div>
+      <div class="col-sm-8 col-sm-offset-2 text-center" style="font-size: 3.5rem; margin-top: 4rem;">
+        This certifictae is awarded to
+      </div>
+      <div class="col-sm-6 col-sm-offset-3 text-center" style="font-size: 5rem;">
+        {{certificate.f_name}} {{certificate.l_name}}
+      </div>
+      <div class="col-sm-12 text-center" style="font-size: 2.5rem; margin-top: 4rem;">
+        For successfully completing the online course and examination of
+      </div>
+      <div class="col-sm-8 col-sm-offset-2 text-center" style="font-size: 3.5rem; position: relative;">
+        {{certificate.course_name}}
+        <span class="icon-certificate certificate-icon-wrapper"></span>
+      </div>
+      <div class="col-sm-12 text-center" style="margin-top: 4rem;">
+        {{certificate.completed_time}}
+      </div>
+    </li>
+  </ul>
+  </div>
+</div>

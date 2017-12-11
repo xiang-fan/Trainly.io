@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?1ckie0');
-  src:  url('fonts/icomoon.eot?1ckie0#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?1ckie0') format('truetype'),
-    url('fonts/icomoon.woff?1ckie0') format('woff'),
-    url('fonts/icomoon.svg?1ckie0#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?l2i5ez');
+  src:  url('fonts/icomoon.eot?l2i5ez#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?l2i5ez') format('truetype'),
+    url('fonts/icomoon.woff?l2i5ez') format('woff'),
+    url('fonts/icomoon.svg?l2i5ez#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-certificate:before {
+  content: "\e905";
+}
 .icon-thumbs-o-up:before {
   content: "\e900";
 }
@@ -102,4 +105,23 @@ a:focus {
 
 input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus {
   outline: none;
+}
+
+.certificate-button {
+  position: absolute;
+  right: 0.3rem;
+  font-size: 3.7rem;
+  top: -1rem;
+}
+
+.certificate-button:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.certificate-icon-wrapper {
+  font-size: 18rem;
+  position: absolute;
+  top: 1rem;
+  left: -12rem;
 }

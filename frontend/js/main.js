@@ -9,6 +9,7 @@
   trainly.controller("RegisterController", RegisterController);
   trainly.controller("AuthenticateController", AuthenticateController);
   trainly.controller("HistoryController", HistoryController);
+  trainly.controller("CertificateController", CertificateController);
 
   function RegisterController($scope, $routeParams, apiService, $location) {
     $scope.register = function() {
@@ -91,6 +92,14 @@
     });
   }
 
+  function CertificateController($scope, $routeParams, apiService) {
+    $scope.user_id = $routeParams.uid;
+    $scope.course_id = $routeParams.cid;
+    apiService.getCertificate($scope.user_id, $scope.course_id)
+    .then(function(response) {
+      $scope.certificate = response.data[0].data[0];
+    })
+  }
 
   // function CourseDetailController($scope, $routeParams, apiService, $location) {
   //   $scope.user_id = $routeParams.uid;
@@ -313,6 +322,11 @@
     .when("/user/:uid/history", {
       templateUrl: "frontend/templates/history.html",
       controller: "HistoryController",
+      controllerAs: "model"
+    })
+    .when("/user/:uid/course/:cid/certificate", {
+      templateUrl: "frontend/templates/certificate.html",
+      controller: "CertificateController",
       controllerAs: "model"
     })
 

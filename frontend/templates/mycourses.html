@@ -22,8 +22,11 @@
           <div class="col-md-3 text-right">
             COMPLETED
           </div>
-          <div class="col-sm-12">
+          <div class="col-sm-10" style="font-size: 1.3rem;">
             {{course.topic}} / {{course.secondary_topics}}
+          </div>
+          <div class="col-sm-2 text-right">
+            <a ng-href="{{'#/user/'+user_id+'/course/'+course.course_id+'/certificate'}}"><span class="icon-certificate certificate-button"></span></a>
           </div>
         </div>
         <a ng-href="{{'#/user/'+user_id+'/course/'+course.course_id}}" ng-if="course.complete != 'Yes'">
@@ -33,7 +36,7 @@
           <div class="col-md-3 text-right">
             ENROLLED
           </div>
-          <div class="col-sm-12">
+          <div class="col-sm-12" style="font-size: 1.3rem;">
             {{course.topic}} / {{course.secondary_topics}}
           </div>
         </a> 
@@ -45,8 +48,8 @@
     <ul class="list-group">
       <li ng-repeat="course in myinterestedcourses" class="list-group-item">
         {{course.course_id}} {{course.name}}
-        <div class="col-sm-12">
-            {{course.topic}} / {{course.secondary_topics}}
+        <div class="col-sm-12" style="font-size: 1.3rem;">
+          {{course.topic}} / {{course.secondary_topics}}
         </div>
       </li>
     </ul>
