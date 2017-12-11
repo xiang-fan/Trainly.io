@@ -8,6 +8,7 @@
   trainly.controller("LoginController", LoginController);
   trainly.controller("RegisterController", RegisterController);
   trainly.controller("AuthenticateController", AuthenticateController);
+  trainly.controller("HistoryController", HistoryController);
 
   function RegisterController($scope, $routeParams, apiService, $location) {
     $scope.register = function() {
@@ -74,6 +75,19 @@
     apiService.getMyInterestedCourses($scope.user_id)
     .then(function(response) {
       $scope.myinterestedcourses = response.data[0].data;
+    });
+  }
+
+  function HistoryController($scope, $routeParams, apiService) {
+    $scope.user_id = $routeParams.uid;
+    apiService.getHistory($scope.user_id)
+    .then(function(response) {
+      $scope.historylist = response.data[0].data;
+    });
+
+    apiService.getTotalCost($scope.user_id)
+    .then(function(response) {
+      $scope.cost = response.data[0].data[0];
     });
   }
 
@@ -294,6 +308,11 @@
     .when("/user/:uid/authenticate", {
       templateUrl: "frontend/templates/authenticate.html",
       controller: "AuthenticateController",
+      controllerAs: "model"
+    })
+    .when("/user/:uid/history", {
+      templateUrl: "frontend/templates/history.html",
+      controller: "HistoryController",
       controllerAs: "model"
     })
 

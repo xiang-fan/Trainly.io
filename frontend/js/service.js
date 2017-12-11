@@ -22,7 +22,10 @@ function apiService($http) {
     getFacultyWL: getFacultyWL,
     getAdminWL: getAdminWL,
     authenticateFaculty: authenticateFaculty,
-    authenticateAdmin: authenticateAdmin
+    authenticateAdmin: authenticateAdmin,
+    getHistory: getHistory,
+    getTotalCost: getTotalCost
+
 
 
 
@@ -147,6 +150,16 @@ function apiService($http) {
     var obj = {uid: uid, aid: aid};
     return $http.put(url, obj);
 
+  }
+
+  function getHistory(uid) {
+    var url = '/api/gethistory/' + uid;
+    return $http.get(url);
+  }
+
+  function getTotalCost(uid) {
+    var url = '/api/gettotalcost/' + uid;
+    return $http.get(url);
   }
 
 

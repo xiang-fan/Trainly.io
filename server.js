@@ -6,23 +6,23 @@ parser   = require('body-parser'),
 password = require('password-hash-and-salt');
 
 
-var pool = mysql.createPool({
-  connectionLimit : 10,
-  host     : 'us-cdbr-iron-east-05.cleardb.net',
-  user     : 'bc25561c4d7046',
-  password : '017038aa',
-  database : 'heroku_eecbd9de5c4c545',
-  debug    :  false
-});   
-
 // var pool = mysql.createPool({
 //   connectionLimit : 10,
-//   host     : 'localhost',
-//   user     : 'root',
-//   password : '',
-//   database : 'trainlyio',
+//   host     : 'us-cdbr-iron-east-05.cleardb.net',
+//   user     : 'bc25561c4d7046',
+//   password : '017038aa',
+//   database : 'heroku_eecbd9de5c4c545',
 //   debug    :  false
-// }); 
+// });   
+
+var pool = mysql.createPool({
+  connectionLimit : 10,
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'trainlyio',
+  debug    :  false
+}); 
 
 // Setup express
 var app = express();
@@ -37,6 +37,8 @@ app.get('/',function(req,res){
     res.sendFile('index.html',{'root': __dirname + '/frontend'});
 })
 app.exports = pool;
+
+//All APIs impleted here
 
 //getUserById
 app.get('/api/user/:id', function (req,res) {
@@ -231,6 +233,50 @@ app.get('/api/getfacultywl/:uid', function (req, res) {
   });
 })
 
+//get account history
+app.get('/api/gethistory/:uid', function (req, res) {
+  var uid = req.params.uid;
+  pool.getConnection(function(err,connection){
+    connection.query('SELECT USER.user_id, COURSE.course_id, ENROLLED.start_time, ENROLLED.end_time, COURSE.cost, ENROLLED.payment_code FROM USER INNER JOIN ENROLLED ON USER.user_id = ENROLLED.user_id INNER JOIN COURSE ON COURSE.course_id = ENROLLED.course_id WHERE USER.user_id = ?', [uid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+//get total cost
+app.get('/api/gettotalcost/:uid', function (req, res) {
+  var uid = req.params.uid;
+  pool.getConnection(function(err,connection){
+    connection.query('SELECT USER.user_id, user.f_name, user.l_name, SUM(COURSE.cost) AS total_spent FROM USER INNER JOIN ENROLLED ON USER.user_id = ENROLLED.user_id INNER JOIN COURSE ON ENROLLED.course_id = COURSE.course_id WHERE USER.user_id = ? GROUP BY user_id', [uid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
 //get admin waiting list
 app.get('/api/getadminwl/:uid', function (req, res) {
   var uid = req.params.uid;
@@ -317,36 +363,6 @@ app.put('/api/disinterestcourse', function (req,res) {
 
 
 app.get('/api/user/:uid/mycourses', function (req, res) {
-  // var mysecret = "pbkdf2$10000$ada9ad04684b86a4256462d3bb3353e287957974e26292d73d6163d18430b399cf30bcfe6668a8e55cb9e4caff553519c7af650628f678842c99ee26e82de41b$376deedf03783d506d3d5915500bc823cc6c2d4e37f4374af868a217da8c4418de2a25ff7d59203f9876e88c585dba12e832547cab56b878dc57aca7187b9fa2";
-  // var mysecret2 = "";
-  // password('mysecret').hash(function(error, hash) {
-  //   if(error)
-  //     throw new Error('Something went wrong!');
-
-  //   // Store hash (incl. algorithm, iterations, and salt) 
-  //   mysecret = hash;
-  //   console.log(mysecret);
-  // });
-
-  // password('mysecret').hash(function(error, hash) {
-  //   if(error)
-  //     throw new Error('Something went wrong!');
-
-  //   // Store hash (incl. algorithm, iterations, and salt) 
-  //   mysecret2 = hash;
-  //   console.log(mysecret2);
-
-  //   password('mysecret').verifyAgainst(mysecret, function(error, verified) {
-  //     if(error)
-  //         throw new Error('Something went wrong!');
-  //     if(!verified) {
-  //         console.log("Don't try! We got you!");
-  //     } else {
-  //         console.log("verified");
-  //     }
-  //   });
-  // });
-
   
 
   pool.getConnection(function(err,connection){
