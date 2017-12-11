@@ -77,6 +77,75 @@
     });
   }
 
+
+  // function CourseDetailController($scope, $routeParams, apiService, $location) {
+  //   $scope.user_id = $routeParams.uid;
+  //   $scope.course_id = $routeParams.cid;
+  //   $scope.getIncompletedMaterials = function(uid, cid) {
+  //     apiService.getIncompletedMaterials(uid, cid)
+  //     .then(function(response) {
+  //       $scope.incompletedmaterials = response.data[0].data;
+  //       console.log($scope.incompletedmaterials);
+  //     });
+  //   }
+
+  function AuthenticateController($scope, $routeParams, apiService) {
+    $scope.user_id = $routeParams.uid;
+
+    $scope.getFacultyWL = function(uid) {
+      apiService.getFacultyWL(uid)
+      .then(function(response) {
+        $scope.facultylist = response.data[0].data;
+      });
+    }
+
+    $scope.getAdminWL = function(uid) {
+      apiService.getAdminWL(uid)
+      .then(function(response) {
+        $scope.adminlist = response.data[0].data;
+      });
+    }
+
+    $scope.getFacultyWL($scope.user_id);
+    $scope.getAdminWL($scope.user_id);
+
+    $scope.authenticateFaculty = function(faculty) {
+      apiService.authenticateFaculty($scope.user_id, faculty.faculty_id)
+      .then(function(response) {
+        if (response.data[0].result == 'success') {
+          alert("You have approved this user as faculty!")
+          console.log("success");
+          $scope.getFacultyWL($scope.user_id);
+          $scope.getAdminWL($scope.user_id);
+        }
+        else {
+          console.log("error");
+        }
+
+
+      });
+    }
+
+    $scope.authenticateAdmin = function(admin) {
+      apiService.authenticateAdmin($scope.user_id, admin.admin_id)
+      .then(function(response) {
+        if (response.data[0].result == 'success') {
+          alert("You have approved this user as admin!")
+          console.log("success");
+          $scope.getFacultyWL($scope.user_id);
+          $scope.getAdminWL($scope.user_id);
+        }
+        else {
+          console.log("error");
+        }
+
+
+      });
+    }
+
+
+  }
+
   function CourseController($scope, apiService, $routeParams) {
     $scope.user_id = $routeParams.uid;
     $scope.getAllCourses = function(uid) {

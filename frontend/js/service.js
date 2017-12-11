@@ -18,7 +18,13 @@ function apiService($http) {
     login: login,
     register: register,
     registerFaculty: registerFaculty,
-    registerAdmin: registerAdmin
+    registerAdmin: registerAdmin,
+    getFacultyWL: getFacultyWL,
+    getAdminWL: getAdminWL,
+    authenticateFaculty: authenticateFaculty,
+    authenticateAdmin: authenticateAdmin
+
+
 
   };
   return api; 
@@ -115,6 +121,30 @@ function apiService($http) {
   function registerAdmin(email) {
     var url = '/api/registeradmin';
     var obj = {email: email};
+    return $http.put(url, obj);
+
+  }
+
+  function getFacultyWL(uid) {
+    var url = '/api/getfacultywl/' + uid;
+    return $http.get(url);
+  }
+
+  function getAdminWL(uid) {
+    var url = '/api/getadminwl/' + uid;
+    return $http.get(url);
+  }
+
+  function authenticateFaculty(uid, fid) {
+    var url = '/api/authenticatefaculty';
+    var obj = {uid: uid, fid: fid};
+    return $http.put(url, obj);
+
+  }
+
+  function authenticateAdmin(uid, aid) {
+    var url = '/api/authenticateadmin';
+    var obj = {uid: uid, aid: aid};
     return $http.put(url, obj);
 
   }

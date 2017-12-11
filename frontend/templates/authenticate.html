@@ -3,3 +3,43 @@
     <h1><a ng-href="{{'#/user/'+user_id}}" style="color: white;">Trainly.io</a></h1>
   </li>
 </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Authentication</h1>
+    </div>
+  </div>
+  <div class="row" style="padding-top: 3rem;">
+  <div class="col-md-6">
+    <h2>Facutly List</h2>
+    <ul class="list-group">
+      <li ng-repeat="faculty in facultylist" class="list-group-item">
+        <div >
+          <div class="col-md-9">
+            ID: {{faculty.faculty_id}} {{faculty.title}} {{faculty.affiliation}} {{faculty.website}}
+          </div>
+          <div class="col-md-3 text-right"><a href ng-click="authenticateFaculty(faculty)" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+            <h3>Approve</h3>
+          </a></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-6">
+  <h2>Administrator List</h2>
+    <ul class="list-group">
+      <li ng-repeat="admin in adminlist" class="list-group-item">
+        <div >
+          <div class="col-md-9">
+            ID: {{admin.admin_id}} {{admin.date_time}} 
+          </div>
+          <div class="col-md-3 text-right"><a href ng-click="authenticateAdmin(admin)" class="btn btn-primary" role="button" style="padding: 0.5rem 2rem; color: white;">
+            <h3>Approve</h3>
+          </a></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  </div>
+</div>

@@ -25,7 +25,7 @@
         <h2>My Courses</h2>
       </a>
     </div>
-    <div class="col-sm-12" ng-if="user.admin_id != NULL">
+    <div class="col-sm-12" ng-if="(user.admin_id != NULL) && (user.grantor_id != NULL)">
       <a class="btn btn-primary" ng-href="{{'#/user/' + user.user_id + '/authenticate'}}" role="button" style="width: 20rem; margin-bottom: 2rem; padding: 2rem 0;">
         <h2>Authenticate</h2>
       </a>

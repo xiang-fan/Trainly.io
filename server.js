@@ -6,23 +6,23 @@ parser   = require('body-parser'),
 password = require('password-hash-and-salt');
 
 
-var pool = mysql.createPool({
-  connectionLimit : 10,
-  host     : 'us-cdbr-iron-east-05.cleardb.net',
-  user     : 'bc25561c4d7046',
-  password : '017038aa',
-  database : 'heroku_eecbd9de5c4c545',
-  debug    :  false
-});   
-
 // var pool = mysql.createPool({
 //   connectionLimit : 10,
-//   host     : 'localhost',
-//   user     : 'root',
-//   password : '',
-//   database : 'trainlyio',
+//   host     : 'us-cdbr-iron-east-05.cleardb.net',
+//   user     : 'bc25561c4d7046',
+//   password : '017038aa',
+//   database : 'heroku_eecbd9de5c4c545',
 //   debug    :  false
-// }); 
+// });   
+
+var pool = mysql.createPool({
+  connectionLimit : 10,
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'trainlyio',
+  debug    :  false
+}); 
 
 // Setup express
 var app = express();
@@ -192,6 +192,50 @@ app.get('/api/user/:uid/courses', function (req, res) {
   var uid = req.params.uid;
   pool.getConnection(function(err,connection){
     connection.query('select course.course_id, course.description, course.name, course.icon, course.cost, (enrolled.user_id is not NULL) as enrolled, (interested.user_id is not NULL) as interested from course left join user on user.user_id = ? left join enrolled on course.course_id = enrolled.course_id and user.user_id = enrolled.user_id left join interested on interested.user_id = user.user_id and interested.course_id = course.course_id', [uid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+//get faculty waiting list
+app.get('/api/getfacultywl/:uid', function (req, res) {
+  var uid = req.params.uid;
+  pool.getConnection(function(err,connection){
+    connection.query('select * from faculty where faculty.grantor_id is NULL and faculty.faculty_id != ?', [uid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+
+        if (rows.length != 0) {
+          response.push({'result' : 'success', 'data' : rows});
+        } else {
+          response.push({'result' : 'error', 'msg' : 'No Results Found'});
+        }
+        res.status(200).send(JSON.stringify(response));
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  });
+})
+
+//get admin waiting list
+app.get('/api/getadminwl/:uid', function (req, res) {
+  var uid = req.params.uid;
+  pool.getConnection(function(err,connection){
+    connection.query('select * from administrator where administrator.grantor_id is NULL and administrator.admin_id != 1 and administrator.admin_id != ?', [uid], function(err, rows, fields) {
       connection.release();
       if (!err){
         var response = [];
@@ -453,6 +497,48 @@ app.put('/api/completecourse', function (req,res) {
  
   pool.getConnection(function(err,connection){
     connection.query(sql, [uid, cid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+  
+});
+
+app.put('/api/authenticatefaculty', function (req,res) {
+  var uid = req.body.uid;
+  var fid = req.body.fid;
+  var sql = "UPDATE `FACULTY` SET `grantor_id`=? WHERE `faculty_id`=?";
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [uid, fid], function(err, rows, fields) {
+      connection.release();
+      if (!err){
+        var response = [];
+        response.push({'result' : 'success'});
+        res.status(200).send(JSON.stringify(response));
+      } 
+      else {
+        res.status(400).send(err);
+      }
+    });
+  });
+  
+});
+
+app.put('/api/authenticateadmin', function (req,res) {
+  var uid = req.body.uid;
+  var aid = req.body.aid;
+  var sql = "UPDATE `administrator` SET `grantor_id`=? WHERE `admin_id`=?";
+ 
+  pool.getConnection(function(err,connection){
+    connection.query(sql, [uid, aid], function(err, rows, fields) {
       connection.release();
       if (!err){
         var response = [];
